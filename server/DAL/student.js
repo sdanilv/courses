@@ -15,9 +15,8 @@ const StudentDAL = {
             student.courses = student.courses.filter(course => course.toString() !== courseID.toString());
             student.save();
         }),
-    removeStudent: id =>
-        Student.deleteOne(id)
-            .then(() =>this.getAllStudent())
+    removeStudent: studentId =>
+        Student.deleteOne({_id: studentId})
 };
 
 module.exports = StudentDAL;

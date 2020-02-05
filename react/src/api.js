@@ -7,7 +7,8 @@ export default {
     getAllStudents: () => getData(axiosStudents.get("")),
     addStudent: (student) => getData(axiosStudents.put("", student)),
     changeStudent: (id, student) => axiosStudents.post(`/${id}`, student).then(res => res.data),
-    deleteStudent: (id) => axiosStudents.delete(`/${id}`).then(res => res.data),
+    deleteStudent: (id) =>{ console.log(id);
+        return axiosStudents.delete(`/${id}`).then(res => res.data)},
 
     getAllCourses: () => getData(axiosCourses.get("")),
     addCourse: (course) => getData(axiosCourses.put("", course)),

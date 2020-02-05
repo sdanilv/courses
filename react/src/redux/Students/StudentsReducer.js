@@ -3,7 +3,7 @@ import api from "../../api";
 const SET_STUDENTS = "SET_STUDENTS";
 const ADD_STUDENT = "ADD_STUDENT";
 // const CHANGE_STUDENT = "CHANGE_STUDENT";
-// const DELETE_STUDENT = "DELETE_STUDENT";
+const DELETE_STUDENT = "DELETE_STUDENT";
 
 
 const initStore = {
@@ -16,6 +16,9 @@ const StudentsReducer = (store = initStore, action) => {
             return {...store, students: action.students};
         case ADD_STUDENT:
             return {...store, students: [...store.students, action.student]};
+        case DELETE_STUDENT:
+            return {...store, students: store.students.filter(student => student._id !== action.id)};
+
         default:
             return store;
     }
@@ -30,11 +33,26 @@ export const getStudentFromServer = () => dispatch => {
 };
 
 
-const addStudent= (student) => ({type: ADD_STUDENT, student});
+const addStudent = (student) => ({type: ADD_STUDENT, student});
 
 export const addStudentToServer = (student) => dispatch => {
     api.addStudent(student).then(student => {
         dispatch(addStudent(student));
+    })
+};
+
+
+export const changeStudentInServer = (student) => dispatch => {
+    api.changeStudent(student._id, student).then(() => {
+        dispatch(getStudentFromServer());
+    })
+};
+
+const removeStudent = (id) => ({type: DELETE_STUDENT, id});
+
+export const removeStudentFromServer = (id) => dispatch => {
+    api.deleteStudent(id).then(() => {
+        dispatch(removeStudent(id));
     })
 };
 
