@@ -1,0 +1,9 @@
+.table{
+    /*min-width: 650px;*/
+    margin: 0 auto
+}
+
+.tableContainer{
+    margin: 0 auto;
+    max-width:  75vw;
+}
