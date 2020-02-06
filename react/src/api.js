@@ -6,9 +6,8 @@ const getData = promise => promise.then(res => res.data);
 export default {
     getAllStudents: () => getData(axiosStudents.get("")),
     addStudent: (student) => getData(axiosStudents.put("", student)),
-    changeStudent: (id, student) => axiosStudents.post(`/${id}`, student).then(res => res.data),
-    deleteStudent: (id) =>{ console.log(id);
-        return axiosStudents.delete(`/${id}`).then(res => res.data)},
+    changeStudent: (id, student) => getData(axiosStudents.post(`/${id}`, student)),
+    deleteStudent: (id) => getData(axiosStudents.delete(`/${id}`)),
 
     getAllCourses: () => getData(axiosCourses.get("")),
     addCourse: (course) => getData(axiosCourses.put("", course)),

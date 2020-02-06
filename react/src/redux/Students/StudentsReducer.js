@@ -2,7 +2,6 @@ import api from "../../api";
 
 const SET_STUDENTS = "SET_STUDENTS";
 const ADD_STUDENT = "ADD_STUDENT";
-// const CHANGE_STUDENT = "CHANGE_STUDENT";
 const DELETE_STUDENT = "DELETE_STUDENT";
 
 
