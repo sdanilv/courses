@@ -32,6 +32,7 @@ export const getCoursesFromServer = () => dispatch => {
 };
 
 
+
 const addCourses= (course) => ({type: ADD_COURSE, course});
 
 export const addCourseToServer = (course) => dispatch => {
