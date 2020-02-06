@@ -18,7 +18,6 @@ const StudentsReducer = (store = initStore, action) => {
             return {...store, students: [...store.students, action.student]};
         case DELETE_STUDENT:
             return {...store, students: store.students.filter(student => student._id !== action.id)};
-
         default:
             return store;
     }

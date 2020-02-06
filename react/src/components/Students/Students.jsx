@@ -15,7 +15,7 @@ const Students = props => {
         props.addStudentToServer({...formValues});
         props.reset("addForm")
     };
-    const removeStudentHandler = id => () =>{
+    const removeStudentHandler = id => () => {
         props.removeStudentFromServer(id);
     };
 
@@ -29,16 +29,23 @@ const Students = props => {
             <TableCell>{student.name}</TableCell>
             <TableCell>{student.telephone}</TableCell>
             <TableCell>{student.email}</TableCell>
-            <TableCell><Button  color="secondary" startIcon={<DeleteIcon />} onClick={removeStudentHandler(student._id)}>Delete</Button></TableCell>
+            <TableCell><Button color="secondary" startIcon={<DeleteIcon/>}
+                               onClick={removeStudentHandler(student._id)}>
+                Delete</Button></TableCell>
         </TableRow>
     });
 
     return <div>
         <AddStudentForm onSubmit={submit}/>
-        <GenerateTable body={students} columnsNames={["Name", "Telephone", "Email", "Action"]}/>
+        <GenerateTable body={students} columnsNames={["Name", "Telephone", "Email", "Delete"]}/>
     </div>
 };
 const mapStateToProps = state => ({
     students: state.Students.students
 });
-export default connect(mapStateToProps, {getStudentFromServer, addStudentToServer, removeStudentFromServer ,reset})(Students);
+export default connect(mapStateToProps, {
+    getStudentFromServer,
+    addStudentToServer,
+    removeStudentFromServer,
+    reset
+})(Students);
