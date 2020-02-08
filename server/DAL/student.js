@@ -9,7 +9,7 @@ const StudentDAL = {
         return Student.findByIdAndUpdate(id, {$push: {courses: courseID}})
             .then(() => Student.findById(id));
     },
-    removeCourseFromStudent: (id, courseID) => Student.findById(id,
+    removeCourseFromStudent: (studentID, courseID) => Student.findById(studentID,
         (err, student) => {
             console.log(student.courses);
             student.courses = student.courses.filter(course => course.toString() !== courseID.toString());

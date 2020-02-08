@@ -23,8 +23,8 @@ router.post("/courses/name/:id", (req, res) => {
     CourseDAL.changeCourseName(req.params.id, req.body.name, res.send.bind(res))
 });
 
-router.post("/courses/students/:id", (req, res) => {
-    CourseDAL.addStudentInCourse(req.params.id, req.body.students, res.send.bind(res))
+router.post("/courses/:id/students/", (req, res) => {
+    CourseDAL.addStudentInCourse(req.params.id, req.body.student, res.send.bind(res))
 });
 
 router.delete("/courses/:id", (req, res) => {
@@ -34,7 +34,7 @@ router.delete("/courses/:id", (req, res) => {
     })
 });
 
-router.delete("/courses/students/:id", (req, res) => {
-    CourseDAL.removeStudentFromCourse(req.params.id, req.body.students[0], res.send.bind(res));
+router.delete("/courses/:courseID/students/:studentID", (req, res) => {
+    CourseDAL.removeStudentFromCourse(req.params.courseID, req.params.studentID, res.send.bind(res));
 });
 module.exports = router;

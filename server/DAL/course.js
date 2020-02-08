@@ -9,17 +9,18 @@ const CourseDAL = {
     addStudentInCourse: (_id, student, callback) =>
         Course.findById({_id},
             (err, course) => {
-                StudentDAL.addStudentToCurse(student[0], _id);
-                course.students.push(student[0]);
+            console.log(student);
+                StudentDAL.addStudentToCurse(student, _id);
+                course.students.push(student);
                 course.save((err, data) => {
                     callback({data});
                 });
             }),
-    removeStudentFromCourse: (_id, student, callback) =>
-        Course.findById({_id},
+    removeStudentFromCourse: (courseID, studentID, callback) =>
+        Course.findById({_id: courseID},
             (err, course) => {
-                StudentDAL.removeCourseFromStudent(student, _id);
-                course.students = course.students.filter(stud => stud.toString() !== student.toString());
+                StudentDAL.removeCourseFromStudent(studentID, courseID);
+                course.students = course.students.filter(stud => stud.toString() !== studentID.toString());
                 course.save((err, data) => {
                     callback(data);
                 });
