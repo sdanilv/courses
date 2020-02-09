@@ -9,12 +9,15 @@ const CourseDAL = {
     addStudentInCourse: (_id, student, callback) =>
         Course.findById({_id},
             (err, course) => {
-            console.log(student);
-                StudentDAL.addStudentToCurse(student, _id);
-                course.students.push(student);
-                course.save((err, data) => {
-                    callback({data});
-                });
+
+                if (!course.students.find(({_id}) => _id.toString() === student._id)) {
+
+                    StudentDAL.addStudentToCurse(student, _id);
+                    course.students.push(student);
+                    course.save((err, data) => {
+                        callback({data});
+                    });
+                }
             }),
     removeStudentFromCourse: (courseID, studentID, callback) =>
         Course.findById({_id: courseID},

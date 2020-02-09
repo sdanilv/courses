@@ -19,7 +19,7 @@ router.put("/courses", (req, res) => {
         })
 });
 
-router.post("/courses/name/:id", (req, res) => {
+router.post("/courses/:id/name/", (req, res) => {
     CourseDAL.changeCourseName(req.params.id, req.body.name, res.send.bind(res))
 });
 

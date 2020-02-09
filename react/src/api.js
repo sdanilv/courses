@@ -11,10 +11,10 @@ export default {
 
     getAllCourses: () => getData(axiosCourses.get("")),
     addCourse: (course) => getData(axiosCourses.put("", course)),
-    changeCourseName: (id, name) => getData(axiosCourses.post(`${id}`, name)),
+    changeCourseName: (id, name) => getData(axiosCourses.post(`${id}/name/`, name)),
     deleteCourse: (id) => getData(axiosCourses.delete(`${id}`).then(res => res.data)),
 
     addStudentInCourse: (id, student) => getData(axiosCourses.post(`${id}/students/`, {student})),
-    removeStudentFromCourse: (courseID, studentID) => getData(axiosCourses.delete(`${courseID}/students/${studentID}`, {studentID}, {studentID}).then(res => res.data))
+    removeStudentFromCourse: (courseID, studentID) => getData(axiosCourses.delete(`${courseID}/students/${studentID}`).then(res => res.data))
 
 };

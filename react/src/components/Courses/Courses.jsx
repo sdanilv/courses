@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {connect} from "react-redux";
-import {addCourseToServer, getCoursesFromServer, removeCourseFromServer} from "../../redux/Courses/CoursesReducer";
+import {addCourseToServer,  removeCourseFromServer} from "../../redux/Courses/CoursesReducer";
 import AddCourseForm from "../FormTools/AddCourseForm";
 // import style from "./Courses.module.css"
 import {Button, TableCell, TableRow} from '@material-ui/core'
@@ -10,14 +10,9 @@ import {Link} from "react-router-dom";
 
 
 const Courses = props => {
-    const {getCoursesFromServer} = props;
     const submit = (formValues) => {
         props.addCourseToServer({...formValues})
     };
-
-    useEffect(() => {
-        getCoursesFromServer();
-    }, [getCoursesFromServer]);
 
     const removeCourseHandler = id => () => {
         props.removeCourseFromServer(id);
@@ -25,23 +20,23 @@ const Courses = props => {
 
 
     const courses = props.courses.map(({_id, students, name}) => {
-        return <TableRow key={_id}>
+        return <TableRow  key={_id}>
             <TableCell><Link to={`/courses/${_id}`}>{name}</Link></TableCell>
             <TableCell >{students.length}</TableCell>
-            <TableCell >{_id}</TableCell>
             <TableCell><Button color="secondary" startIcon={<DeleteIcon/>}
                                onClick={removeCourseHandler(_id)}>
                 Delete</Button></TableCell>
+            <TableCell >{_id}</TableCell>
 
         </TableRow>
     });
 
     return <div>
         <AddCourseForm onSubmit = {submit}/>
-        <GenerateTable body={courses} columnsNames={["Name", "Students count", "ID", "Action"]}/>
+        <GenerateTable body={courses} columnsNames={["Name", "Students count", "Action", "ID"]}/>
     </div>
 };
 const mapStateToProps = state => ({
     courses: state.Courses.courses
 });
-export default connect(mapStateToProps, {getCoursesFromServer, addCourseToServer, removeCourseFromServer})(Courses);
+export default connect(mapStateToProps, { addCourseToServer, removeCourseFromServer})(Courses);

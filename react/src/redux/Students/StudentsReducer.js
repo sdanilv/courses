@@ -25,7 +25,7 @@ const StudentsReducer = (store = initStore, action) => {
 const setStudents = (students) => ({type: SET_STUDENTS, students});
 
 export const getStudentFromServer = () => dispatch => {
-    api.getAllStudents().then(students => {
+   return api.getAllStudents().then(students => {
         dispatch(setStudents(students));
     })
 };

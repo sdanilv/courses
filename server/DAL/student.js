@@ -11,7 +11,6 @@ const StudentDAL = {
     },
     removeCourseFromStudent: (studentID, courseID) => Student.findById(studentID,
         (err, student) => {
-            console.log(student.courses);
             student.courses = student.courses.filter(course => course.toString() !== courseID.toString());
             student.save();
         }),

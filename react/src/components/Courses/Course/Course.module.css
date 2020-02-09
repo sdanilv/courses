@@ -1,0 +1,11 @@
+.course {
+    margin: 0 auto;
+    max-width: 360px
+}
+.course li{
+    padding-top: 0;
+}
+
+.course input{
+    font-size: 2rem;
+}

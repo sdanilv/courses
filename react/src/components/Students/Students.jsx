@@ -1,20 +1,14 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {connect} from "react-redux";
-import {addStudentToServer, getStudentFromServer, removeStudentFromServer, changeStudentInServer} from "../../redux/Students/StudentsReducer";
+import {addStudentToServer,  removeStudentFromServer, changeStudentInServer} from "../../redux/Students/StudentsReducer";
 import {reset} from "redux-form";
 import MyMaterialTable from "../FormTools/MyMaterialTable";
 
 const Students = props => {
-    const {getStudentFromServer} = props;
 
     const columns = [{ title: 'Name', field: 'name' },
         { title: 'Telephone', field: 'telephone' },
         { title: 'Email', field: 'email' }];
-
-    useEffect(() => {
-        getStudentFromServer();
-    }, [getStudentFromServer]);
-
 
     return <div>
         <MyMaterialTable data = {props.students} columns={columns} changeData={props.changeStudentInServer}
@@ -26,7 +20,6 @@ const mapStateToProps = state => ({
 });
 export default connect(mapStateToProps, {
     changeStudentInServer,
-    getStudentFromServer,
     addStudentToServer,
     removeStudentFromServer,
     reset
