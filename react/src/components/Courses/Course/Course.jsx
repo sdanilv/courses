@@ -1,77 +1,94 @@
-import React, {useEffect} from "react";
+import React, { useState} from "react";
 import {connect} from "react-redux";
 import {compose} from "redux";
 import {
-    addCourseToServer,
     addStudentInCourse,
-    getCoursesFromServer,
-    removeCourseFromServer, removeStudentFromCourse
+    removeStudentFromCourse, setCourseName
 } from "../../../redux/Courses/CoursesReducer";
 
-
+import style from "./Course.module.css";
 import {withRouter} from "react-router";
-import GenerateTable from "../../FormTools/GenerateTable";
-import {Button, Icon, IconButton, TableCell, TableRow} from "@material-ui/core";
-import {Link} from "react-router-dom";
+import {Button, ListItemText} from "@material-ui/core";
 import DeleteIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import {getStudentFromServer} from "../../../redux/Students/StudentsReducer";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import EditNameForm from "./EditNameForm";
 
 
 const Course = props => {
-    console.log(props);
-
-    const {getCoursesFromServer, getStudentFromServer, removeStudentFromCourse, addStudentInCourse,  courses} = props;
+    const {
+         removeStudentFromCourse,
+        addStudentInCourse, setCourseName, courses
+    } = props;
     const courseId = props.match.params.id;
-
-    useEffect(() => {
-        getCoursesFromServer();
-        getStudentFromServer();
-    }, [getCoursesFromServer, getStudentFromServer]);
-
+    const [editable, isEditable] = useState(false);
     const removeStudentHandler = id => () => {
         removeStudentFromCourse(courseId, id)
     };
-    const addStudentHandler = student  => () => {
-        addStudentInCourse(courseId, student);
+    const addStudentHandler = addedStudent => () => {
+        addStudentInCourse(courseId, addedStudent);
     };
-    const course = courses.find(course => course._id === courseId);
 
+    const course = courses.find(course => course._id === courseId);
+//TODO нужен другой подход к поиску других студентов
     const anotherStudents = [];
     props.students.forEach(student => {
         if (student.courses.length === 0) {
             anotherStudents.push(student)
-        } else
+        } else {
+            let isNotStudentThisCourse = true;
             student.courses.forEach(course => {
-                if (course._id !== courseId) anotherStudents.push(student);
-            })
-    });
-    const mapStudentsFomThisCourse = course && course.students.map(({_id, name}) => {
-        return <TableRow key={_id}>
-            <TableCell><Link to={`/students/${_id}`}>{name}</Link></TableCell>
-
-            <TableCell><Button color="secondary" startIcon={<DeleteIcon/>}
-                               onClick={removeStudentHandler(_id)}>
-                Delete</Button></TableCell>
-        </TableRow>
-    });
-    const mapAnotherStudents = anotherStudents && anotherStudents.map(student => {
-        return <TableRow key={student._id}>
-            <TableCell><Link to={`/students/${student._id}`}>{student.name}</Link></TableCell>
-            <TableCell> <IconButton size="small" onClick={addStudentHandler(student)}>
-                <Icon>add_circle</Icon></IconButton>
-            </TableCell>
-
-        </TableRow>
+                if (course._id === courseId) isNotStudentThisCourse = false;
+            });
+            if (isNotStudentThisCourse)
+                anotherStudents.push(student);
+        }
     });
 
+
+    const mapStudentsFromThisCourse = course.students.map(({_id, name}) => {
+        return <ListItem key={_id}>
+            <ListItemText>{name}</ListItemText>
+            <ListItemIcon>
+                <Button color="secondary" startIcon={<DeleteIcon/>}
+                        onClick={removeStudentHandler(_id)}>
+                    Delete
+                </Button>
+            </ListItemIcon>
+        </ListItem>
+
+    });
+    const mapAnotherStudents = anotherStudents.map(student => {
+        return <ListItem key={student._id}>
+            <ListItemText>{student.name}</ListItemText>
+            <ListItemIcon>
+                <Button startIcon={<DeleteIcon/>}
+                        onClick={addStudentHandler(student)}>
+                    ADD
+                </Button>
+            </ListItemIcon>
+        </ListItem>
+    });
+    const editNameHandler = formValues => {
+        setCourseName(courseId, formValues);
+        isEditable(false);
+    };
+    const editableOn = () => {
+        isEditable(true)
+    };
     return (
-        <div>
-            <h1>
-               {course && course.name}
-            </h1>
-            <GenerateTable body={mapStudentsFomThisCourse} columnsNames={["Name", "Action"]}/>
-            <GenerateTable body={mapAnotherStudents} columnsNames={["Name", "Action"]}/>
-
+        <div className={style.course}>
+            {editable ?
+                <EditNameForm onSubmit={editNameHandler} initialValues={{name: course.name}}/> :
+                <h1 onDoubleClick={editableOn}>
+                    {course.name}
+                </h1>
+            }
+            <h3> Students from this course</h3>
+            <List>{mapStudentsFromThisCourse} </List>
+            <h3>Another students</h3>
+            <List>{mapAnotherStudents} </List>
         </div>)
 };
 const mapStateToProps = state => ({
@@ -79,8 +96,7 @@ const mapStateToProps = state => ({
     students: state.Students.students
 });
 export default compose(withRouter, connect(mapStateToProps, {
-    getCoursesFromServer,
-    getStudentFromServer,
     addStudentInCourse,
-    removeStudentFromCourse
+    removeStudentFromCourse,
+    setCourseName
 }))(Course);
