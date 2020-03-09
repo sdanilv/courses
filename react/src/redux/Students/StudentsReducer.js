@@ -48,7 +48,7 @@ export const changeStudentInServer = (student) => dispatch => {
 
 const removeStudent = (id) => ({type: DELETE_STUDENT, id});
 
-export const removeStudentFromServer = (id) => dispatch => {
+export const removeStudentFromServer = id => dispatch => {
     api.deleteStudent(id).then(() => {
         dispatch(removeStudent(id));
     })

@@ -5,7 +5,7 @@ const student = new Schema({
     telephone: {type: String, required: true},
     email: {type: String, required: true},
     courses: {
-        type: [{type: mongoose.Schema.Types.ObjectId, ref: "Course"}],
+        type: [{type: Schema.Types.ObjectId, ref: "Course"}],
         default: []
     }
 });

@@ -62,9 +62,10 @@ export const getCoursesFromServer = () => dispatch => {
     })
 };
 const setCourseNameAC = (id, name) => ({type: SET_COURSE_NAME, id, name});
-export const setCourseName = (id, course) => dispatch => {
-    api.changeCourseName(id, course).then(courses => {
-        dispatch(setCourseNameAC(id, course.name));
+export const setCourseName = ( {_id,name}) => dispatch => {
+    api.changeCourseName(_id,name).then(courses => {
+
+        dispatch(setCourseNameAC(_id,name));
     })
 };
 
